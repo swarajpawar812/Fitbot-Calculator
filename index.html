@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FITBOT</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <form id="fitness-form"></form>
+    <div class="fitness-group">
+        <h1>Fitness Calculator</h1>
+        <!-- Form Section -->
+        
+            <div class="form-group">
+                <label for="male">Male</label>
+                <input type="radio" id="male" name="gender" value="male" checked title="Male"> 
+                <label for="female">Female</label>
+                <input type="radio" id="female" name="gender" value="female" title="Female">
+            </div>
+            <div class="form-group">
+                <label for="age">Age (years):</label>
+                <input type="number" id="age" name="age" min="1" max="120" required>
+            </div>
+            <div class="form-group">
+                <label for="weight">Weight:</label>
+                <input type="number" id="weight" name="weight" required>
+                <label for="weight-unit">Weight Unit:</label> 
+                <select id="weight-unit" title="Weight Unit">
+                    <option value="kg">Kilograms</option>
+                    <option value="lbs">Pounds</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="height">Height:</label>
+                <input type="number" id="height" name="height" required>
+                <label for="height-unit">Height Unit:</label>
+                <select id="height-unit" title="Height Unit">
+                    <option value="cm">Centimeters</option>
+                    <option value="ft">Feet/Inches</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="activity">Activity Level:</label>
+                <select id="activity">
+                    <option value="sedentary">Sedentary (No workout)</option>
+                    <option value="low">Low (1-2 workouts/week)</option>
+                    <option value="moderate">Moderate (3-4 workouts/week)</option>
+                    <option value="high">High (4-5 workouts/week)</option>
+                    <option value="very-high">Very High (6-7 workouts/week)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="goal-lose">Goal:</label>
+                <input type="radio" id="goal-lose" name="goal" value="lose" title="Lose Weight"> Lose Weight
+                <input type="radio" id="goal-maintain" name="goal" value="maintain" checked title="Maintain Muscle"> Maintain Muscle
+                <input type="radio" id="goal-gain" name="goal" value="gain" title="Gain Muscle"> Gain Muscle
+            </div>
+            <button type="button" id="show-result-main" class="rounded-button">Show Result</button>
+        </form>
+
+        <!-- Results Section (Initially Hidden) -->
+        <div id="results" class="hidden">
+            <h2>Results</h2>
+
+            <!-- Calculated Results -->
+            
+            <div id="bmi-result"></div>
+        
+            <div id="bmr-result"></div>
+        
+            <div id="tdee-result" ></div>
+
+            <!-- Macronutrient Breakdown -->
+            <h3>Your Personalized Macronutrient Breakdown</h3>
+               <p>This is how much protein, carbohydrates,fibers, and fats you should consume based on your fitness goals.</p> 
+            <canvas id="macronutrient-bar-chart"></canvas>
+
+            <!-- Definitions of BMI, BMR, TDEE -->
+            <div id="definitions" class="hidden">
+                <h3>What is BMI?</h3>
+                <p>
+                    <strong>Definition:</strong> Body Mass Index (BMI) is a simple calculation used to assess whether a person has a healthy body weight for a person of their height. It is calculated by dividing a person's weight in kilograms by the square of their height in meters (kg/m²).
+                </p>
+                <p>
+                    <strong>Importance:</strong> BMI is widely used as a screening tool to categorize individuals into weight categories that may lead to health problems. These categories include underweight, normal weight, overweight, and obese. While not a direct measure of body fat, BMI helps in identifying potential health risks associated with different weight levels.
+                </p>
+
+                <h3>What is BMR?</h3>
+                <p>
+                    <strong>Definition:</strong> Basal Metabolic Rate (BMR) is the number of calories your body needs to accomplish its most basic (basal) life-sustaining functions. These functions include breathing, circulation, nutrient processing, and cell production. BMR is measured in a controlled environment with a neutral temperature and while the subject is at rest.
+                </p>
+                <p>
+                    <strong>Importance:</strong> Understanding your BMR can help you better manage your caloric needs. It provides a baseline for determining the amount of food energy (calories) you should consume depending on your activity level to maintain, gain, or lose weight. Knowing your BMR can also be instrumental in creating a personalized diet plan that aligns with your metabolic health and fitness goals.
+                </p>
+
+                <h3>What is TDEE?</h3>
+                <p>
+                    <strong>Definition:</strong> Total Daily Energy Expenditure (TDEE) is the total number of calories you burn each day through all activities, including sleeping, eating, exercising, and performing daily routines. TDEE is usually calculated by multiplying the Basal Metabolic Rate (BMR) by an activity factor that represents different levels of physical activity.
+                </p>
+                <p>
+                    <strong>Importance:</strong> Knowing your TDEE is crucial for designing diet and exercise plans, as it provides a comprehensive overview of your daily caloric needs. It helps in creating a balanced diet and exercise regimen that can effectively support weight management, muscle gain, or weight loss based on your personal health and fitness objectives.
+                </p>
+            </div>
+
+            
+
+            <!-- Example Diet Plan for Muscle Gain -->
+            <div id="example-meal-plan" class="hidden">
+                <h3>Example Diet Plan for Muscle Gain</h3>
+                <div><strong>Meal 1: Breakfast (7:00 AM)</strong></div>
+                <ul>
+                    <li>Protein Pancakes (3-4 pancakes)</li>
+                    <li>1 scoop whey protein isolate</li>
+                    <li>50g oats</li>
+                    <li>2 eggs</li>
+                    <li>100ml whole milk</li>
+                    <li>Add 1 tablespoon peanut butter for extra calories</li>
+                    <li>1 banana or berries for added fiber and vitamins</li>
+                    <li>1 cup coffee or green tea</li>
+                </ul>
+
+                <div><strong>Meal 2: Mid-Morning Snack (10:00 AM)</strong></div>
+                <ul>
+                    <li>Greek Yogurt (200g) with mixed berries and 1 tablespoon chia seeds</li>
+                    <li>10-12 almonds or walnuts for healthy fats</li>
+                </ul>
+
+                <div><strong>Meal 3: Lunch (1:00 PM)</strong></div>
+                <ul>
+                    <li>Grilled Chicken Breast (200g)</li>
+                    <li>Brown Rice (150g cooked) or Quinoa</li>
+                    <li>Mixed Vegetables (steamed or sautéed in olive oil)</li>
+                    <li>Broccoli, spinach, carrots</li>
+                    <li>1 avocado for healthy fats</li>
+                </ul>
+
+                <div><strong>Meal 4: Pre-Workout Snack (3:30 PM)</strong></div>
+                <ul>
+                    <li>Protein Shake (1 scoop whey isolate, 200ml water or milk)</li>
+                    <li>1 apple or 1 sweet potato for quick-digesting carbs</li>
+                    <li>1 tablespoon peanut butter (optional for extra calories)</li>
+                </ul>
+
+                <div><strong>Meal 5: Post-Workout (6:00 PM)</strong></div>
+                <ul>
+                    <li>Protein Shake (1 scoop whey isolate in water or milk)</li>
+                    <li>1 banana for quick-digesting carbs to replenish glycogen</li>
+                </ul>
+
+                <div><strong>Meal 6: Dinner (7:30 PM)</strong></div>
+                <ul>
+                    <li>Salmon or Steak (200g) for protein and omega-3s</li>
+                    <li>Sweet Potatoes (150g cooked) or Brown Rice (optional)</li>
+                    <li>Mixed Green Salad (with olive oil dressing)</li>
+                    <li>Add veggies like cucumbers, bell peppers, and tomatoes</li>
+                    <li>1 boiled egg for additional protein and fats</li>
+                </ul>
+
+                <div><strong>Meal 7: Bedtime Snack (10:00 PM)</strong></div>
+                <ul>
+                    <li>Cottage Cheese (100-150g) or Greek Yogurt</li>
+                    <li>1 tablespoon almond butter or flaxseeds for healthy fats</li>
+                    <li>1-2 mix dried fruit ladoos for slow-digesting energy</li>
+                </ul>
+            </div>
+
+            <!-- Additional Tips -->
+            <h4>Additional Tips:</h4>
+            <ul>
+                <li><strong>Water intake:</strong> Ensure you drink 3-4 liters of water daily to stay hydrated.</li>
+                <li><strong>Supplements:</strong> Continue with whey protein, creatine (before/after workouts), and multivitamins.</li>
+                <li><strong>Calories:</strong> Adjust portion sizes to meet your calorie and macro goals. You need a calorie surplus for muscle gain.</li>
+            </ul>
+        </div>
+    </div>
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Include external JavaScript file -->
+    <script src="app.js"></script>
+</body>
+</html>
